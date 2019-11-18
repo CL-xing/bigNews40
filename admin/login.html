@@ -86,12 +86,12 @@
           password: userWord
         },
         success: function (res) {
-          // console.log(res);
+          console.log(res);
           $('#myModal').modal();
           $('.modal-body').text(res.msg);
           if (res.code == 200) {
             // 本地存储
-            window.localStorage.getItem('token', res.token);
+            window.localStorage.setItem('token', res.token);
             // 跳转页面
             window.location.href = './index.html';
           }
