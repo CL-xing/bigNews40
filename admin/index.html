@@ -59,6 +59,7 @@
         // 入口函数
         $(function () {
 
+            // 立即发送ajax请求获得用户数据
             $.ajax({
                 type: 'get',
                 url: 'http://localhost:8080/api/v1/admin/user/info',
@@ -73,11 +74,14 @@
                 },
 
             });
+            
 
+            // 账号登录退出功能
+            // 1.获取点击事件
             $('.logout').on('click', function () {
-                // 删除本地存储
+                // 2.删除本地存储
                 window.localStorage.removeItem('token');
-                // 退出当前页面,返回登录页面
+                // 3.退出当前页面,返回登录页面
                 window.location.href = './login.html';
 
             })
