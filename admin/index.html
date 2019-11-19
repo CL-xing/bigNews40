@@ -73,7 +73,22 @@
                 },
 
             });
+
+            $('.logout').on('click', function () {
+                // 删除本地存储
+                window.localStorage.removeItem('token');
+                // 退出当前页面,返回登录页面
+                window.location.href = './login.html';
+
+            })
+
         });
+
+
+
+
+
+
 
     </script>
 
