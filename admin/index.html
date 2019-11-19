@@ -67,14 +67,14 @@
                 //     Authorization: window.localStorage.getItem('token')
                 // },
                 success: function (res) {
-                    console.log(res);
+                    // console.log(res);
                     $('.user_info>img').attr('src', res.data.userPic);
                     $('.user_info>span').html('欢迎&nbsp;&nbsp;' + res.data.nickname);
                     $('.user_center_link>img').attr('src', res.data.userPic);
                 },
 
             });
-            
+
 
             // 账号登录退出功能
             // 1.获取点击事件
@@ -85,6 +85,28 @@
                 window.location.href = './login.html';
 
             })
+
+
+            // // 1.实例化对象
+            // var xhr = new XMLHttpRequest();
+            // // 2.初始化(设置请求的数据)
+            // xhr.open('get', 'http://localhost:8080/api/v1/admin/user/info');
+            // xhr.setRequestHeader('Authorization', window.localStorage.getItem('token'))
+            // // 3.监听响应
+            // xhr.onreadystatechange = function () {
+            //     // 5.判断状态和数据是否响应完成
+            //     if (xhr.status == 200 && xhr.readyState == 4) {
+            //         // 6.渲染
+            //         // 数据在xhr.responseText是一个字符串
+            //         // 需要使用对象的话，先用JSON.parse转换成js对象
+            //         var res = JSON.parse(xhr.responseText);
+            //         console.log(res);
+
+            //     }
+            // }
+            // // 发送请求
+            // xhr.send();
+
 
         });
 

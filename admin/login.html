@@ -66,11 +66,15 @@
 <script>
   // 使用JQuery, 先设置好入口函数
   $(function () {
+    // 登录逻辑
+    // 1.先获取登录按钮,给登录注册店家事件
     $('.input_sub').on('click', function (e) {
       // 这个按钮是一个submit按钮，会默认跳转，我们需要阻止其默认行为
       e.preventDefault();
+      // 2.点击的时候获取用户名和密码  我们要去除用户名和密码前后的空格
       var userName = $('.input_txt').val().trim();
       var userWord = $('.input_pass').val().trim();
+      // 3.非空判断
       if (userName == '' || userWord == '') {
         // alert('00');
         $('.modal-body').text('亲，用户名和密码不能为空哦');
@@ -90,6 +94,7 @@
           console.log(res);
           $('#myModal').modal();
           $('.modal-body').text(res.msg);
+          // 判断用户名和密码是否正确
           if (res.code == 200) {
             // 本地存储
             window.localStorage.setItem('token', res.token);
