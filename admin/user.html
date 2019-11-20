@@ -44,7 +44,7 @@
                     <label for="inputPassword3" class="col-sm-2 control-label">用户图标：</label>
                     <div class="col-sm-10">
                         <img src="images/2.jpg" alt="" class="user_pic">
-                        <input style="display: block" name="userPic" type="file" id="exampleInputFile">
+                        <input style="display: none" name="userPic" type="file" id="exampleInputFile">
                         <!-- 给label标签的for属性赋值,值是input标签的id,那这样的话点击label就相当于点击了input -->
                         <br>
                         <label for="exampleInputFile">
@@ -69,5 +69,52 @@
         </div>
     </div>
 </body>
+
+<script src="./js/http.js"></script>
+<script>
+    // 入口函数
+    $(function () {
+        // 发送ajax请求,当用户点击跳转页面的时候，就应该讲用户的信息获取，填充到表单中
+        $.ajax({
+            url: BigNew.user_detail,
+            type: 'get',
+            success: function (backData) {
+                // console.log(backData);
+                // 当数据获取成功时，渲染在页面上
+                if (backData.code == 200) {
+                    // $('input.username').val(backData.data.username);
+                    // $('input.nickname').val(backData.data.nickname);
+                    // $('input.email').val(backData.data.email);
+                    // $('input.password').val(backData.data.password);
+                    // 因为数据中的字段名和表单中的每个表单元素的类名是相同的，所有我们可以这么处理
+                    for (var key in backData.data) {
+                        $('input.' + key).val(backData.data[key]);
+                    }
+                    $('img.user_pic').attr('src', backData.data.userPic);
+                }
+            }
+
+        });
+
+
+        // 给文件按钮注册一个change事件，当选择好图片之后，在页面显示预览效果
+        $('#exampleInputFile').on('change', function () {
+            // console.log(this.files[0]);
+            //将选择的图片转换成一个url地址
+            var imgIcon = this.files[0];
+            // window上有一个URL对象，这个对象有一个createObjectURL,将图片信息转换成url地址
+            var url = URL.createObjectURL(imgIcon);
+            console.log(url);
+            // 将这个地址设置给img的src属性
+            $('.user_pic').attr('src', url);
+        });
+    });
+
+
+
+
+</script>
+
+
 
 </html>
