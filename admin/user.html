@@ -74,7 +74,7 @@
 <script>
     // 入口函数
     $(function () {
-        // 发送ajax请求,当用户点击跳转页面的时候，就应该讲用户的信息获取，填充到表单中
+        // 发送ajax请求,当用户点击跳转页面的时候，就应该将用户的信息获取，填充到表单中
         $.ajax({
             url: BigNew.user_detail,
             type: 'get',
@@ -110,6 +110,53 @@
         });
     });
 
+    //给修改的按钮注册点击事件
+    $('button,btn-edit').on('click', function (e) {
+        // 阻止submit的默认刷新行为
+        e.preventDefault();
+        // 获取表单信息
+        // 获取form表单 formData只能处理原生的DOM对象
+        // console.dir($('#form'));
+        var form = $('#form')[0];
+        var userData = new FormData(form);
+        // 发送ajax请求提交数据
+        $.post({
+            url: BigNew.user_edit,
+            data: userData,
+            // 不需要设置请求类型
+            contentType: false,
+            // 不需要进行编码
+            processData: false,
+            success: function (res) {
+                console.log(res);
+                if (res.code == 200) {
+                    // 刷新子页面
+                    // window.location.reload();
+                    // 在子页面中刷新父页面
+                    // parent.window.location.reload();
+
+                    // 立即发送ajax请求获得用户数据
+                    $.ajax({
+                        type: 'get',
+                        url: window.BigNew.user_info,
+                        success: function (res) {
+                            // 获取到返回的用户信息，在页面渲染
+                            // parent在子页面获取到父页面的元素
+                            // console.log(res);
+                            parent.$('.user_info>img').attr('src', res.data.userPic);
+                            parent.$('.user_info>span').html('欢迎&nbsp;&nbsp;' + res.data.nickname);
+                            parent.$('.user_center_link>img').attr('src', res.data.userPic);
+                            // 刷新子页面
+                            window.location.reload();
+                        }
+
+                    });
+
+                }
+            }
+        })
+
+    })
 
 
 
