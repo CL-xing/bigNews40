@@ -221,7 +221,34 @@
 
 
         })
+        // 给按钮添加删除功能
 
+        // $('btn-delete').on('click',function(){
+        // })自动生成的数据不能这样删除
+        $('tbody').on('click', '.btn-delete', function () {
+            console.log(this);
+            // 要删除时，给用户一个提示 confirm
+            var ans = confirm('亲，你真的要删除吗？');
+            var deleteId = $(this).attr('data-id');
+            console.log(deleteId);
+
+            if (ans) {
+                $.post({
+                    url: BigNew.category_delete,
+                    data: {
+                        id: deleteId,
+                    },
+                    success: function (res) {
+                        // console.log(res);
+                        if (res.code == 204) {
+                            fangfa();
+                        }
+
+                    }
+                })
+            }
+
+        })
 
 
     });
