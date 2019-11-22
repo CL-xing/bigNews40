@@ -55,7 +55,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <!-- <tr>
                         <td>王积千造统最头</td>
                         <td>杰克</td>
                         <td>奇趣事</td>
@@ -65,21 +65,41 @@
                             <a href="article_edit.html" class="btn btn-default btn-xs">编辑</a>
                             <a href="javascript:void(0);" class="btn btn-danger btn-xs delete">删除</a>
                         </td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
             <div class="row text-center">
             </div>
         </div>
     </div>
-
+    <!-- 模板 -->
     <script type="text/html" id="category_list">
         <option value="">所有分类</option>
     {{each data}}
-    <option>{{$value.name}}</option>
+    <option value="{{$value.id}}">{{$value.name}}</option>
     {{/each}}
     </script>
+
     <script src="./js/http.js"></script>
+
+    <!-- 模板 -->
+    <script type="text/html" id="article_list">
+        {{each data.data}}
+        <tr>
+                <td>{{$value.title}}</td>
+                <td>{{$value.author}}</td>
+                <td>{{$value.category}}</td>
+                <td class="text-center">{{$value.date}}</td>
+                <td class="text-center">{{$value.state}}</td>
+                <td class="text-center">
+                    <a href="article_edit.html?id={{$value.id}}"  class="btn btn-default btn-xs">编辑</a>
+                    <a href="javascript:void(0);" data-id='{{$value.id}}' class="btn btn-danger btn-xs delete">删除</a>
+                </td>
+            </tr>
+        {{/each}}
+    </script>
+
+
     <script>
         // 入口函数
         $(function () {
@@ -91,10 +111,69 @@
                     // 渲染到页面
                     $('#selCategory').html(template('category_list', res));
                 }
+            });
+
+
+            // 列表页面初始化数据
+            const page = 1;
+            const perpage = 10;
+            // console.log($('#selCategory').val());
+            // console.log($('#selStatus').val());
+            $.get({
+                url: BigNew.article_query,
+                data: {
+                    type: $('#selCategory').val(),
+                    state: $('#selStatus').val(),
+                    page: page,
+                    perpage: perpage
+                },
+                success: function (res) {
+                    // console.log(res);
+                    if (res.code == 200) {
+                        $('tbody').html(template('article_list', res));
+
+                    }
+
+                }
             })
+
+
+            // 筛选功能,当点击这个按钮的时候筛选数据显示在页面
+            $('#btnSearch').on('click', function (e) {
+                // 阻止默认事件
+                e.preventDefault();
+
+                // console.log($('#selCategory').val());
+                // console.log($('#selStatus').val());
+
+                $.get({
+                    url: BigNew.article_query,
+                    data: {
+                        type: $('#selCategory').val(),
+                        state: $('#selStatus').val(),
+                        //将page设置为1，因为在筛选的时候我们不确定用户点击到了哪一页，我们应该让用户先筛选的时候，从数据的第一页开始显示
+                        page: 1,
+                        perpage: perpage
+                    },
+                    success: function (res) {
+                        // console.log(res);
+                        if (res.code == 200) {
+                            $('tbody').html(template('article_list', res));
+                        }
+                    }
+                })
+            })
+
+
+
+
+
+
         })
 
-        // 列表页面初始化数据
+
+
+
     </script>
 
 
